@@ -1,0 +1,20 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<h1>[% module %] is depended by:</h1>
+
+<hr />
+
+<table class="table table-border table-hover">
+[% FOR repo IN repos %]
+    <tr>
+        <td>[% repo.owner_login %]</td>
+        <td><a href="/user/[% repo.full_name %]">[% repo.name %]</a></td>
+        <td>[% repo.phase%]</td>
+        <td>[% repo.relationship %]</td>
+        <td>[% repo.version %]</td>
+    </tr>
+[% END %]
+</table>
+
+
+[% END %]

@@ -8,7 +8,6 @@ nytprof/
 *.db
 /blib/
 pm_to_blib
-META.json
 META.yml
 MYMETA.json
 MYMETA.yml
@@ -16,3 +15,9 @@ MYMETA.yml
 /_build/
 /local/
 /.carton/
+/CPANasium-*
+/.build
+/_build_params
+!Build/
+!META.json
+!LICENSE

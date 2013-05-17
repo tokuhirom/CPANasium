@@ -6,21 +6,97 @@ use parent qw/Amon2/;
 our $VERSION='0.01';
 use 5.008001;
 
-__PACKAGE__->load_plugin(qw/DBI/);
 
-# initialize database
+use CPANasium::Aggregator;
 use DBI;
-sub setup_schema {
-    my $self = shift;
-    my $dbh = $self->dbh();
-    my $driver_name = $dbh->{Driver}->{Name};
-    my $fname = lc("sql/${driver_name}.sql");
-    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    my $source = do { local $/; <$fh> };
-    for my $stmt (split /;/, $source) {
-        next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr();
+use Teng::Schema::Loader;
+use LWP::UserAgent::Cached;
+use Pithub;
+use JSON::XS;
+
+use Mouse;
+
+has dbh => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $conf = $self->config->{DBI} // die "Missing configuration for DBH";
+        DBI->connect(@$conf);
+    },
+);
+
+has json => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        JSON::XS->new->ascii(1);
+    },
+);
+
+has db => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        Teng::Schema::Loader->load(
+            dbh       => $self->dbh,
+            namespace => 'CPANasium::DB'
+        );
+    },
+);
+
+has ua_cached => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $c = shift;
+        my $conf = $c->config->{'LWP::UserAgent::Cached'} // die;
+        LWP::UserAgent::Cached->new(
+            timeout => 6,
+            %$conf
+        );
     }
+);
+
+has pithub => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $c = shift;
+        my $conf = $c->config->{'Pithub'} // die;
+        Pithub->new(
+            %$conf,
+            ua => $c->ua_cached,
+            auto_pagination => 1,
+        );
+    },
+);
+
+has aggregator => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $conf = $self->config->{'CPANasium::Aggregator'} // die;
+        CPANasium::Aggregator->new(
+            %$conf,
+            db => $self->db,
+            ua => $self->ua_cached,
+            json => $self->json,
+            pithub => $self->pithub,
+        )
+    },
+);
+
+no Mouse;
+
+use Module::Load;
+
+sub batch {
+    my ($self, $name) = @_;
+    Module::Load::load("CPANasium::Batch::$name");
+    "CPANasium::Batch::$name"->new(db => $self->db);
 }
 
 1;

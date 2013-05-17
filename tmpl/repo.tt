@@ -1,0 +1,18 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<h1>[% repo.full_name %]</h1>
+
+<a href="[% repo.html_url %]">goto &amp;github;</a>
+
+<table class="table table-hover table-bordered">
+[% FOR v IN deps %]
+    <tr>
+        <td>[% v.phase %]</td>
+        <td>[% v.relationship %]</td>
+        <td><a href="/module/[% v.module %]">[% v.module %]</a></td>
+        <td>[% v.version %]</td>
+    </tr>
+[% END %]
+</table>
+
+[% END %]
