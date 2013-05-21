@@ -13,12 +13,12 @@ mkpath("/tmp/CPANasium-$<");
             RaiseError => 1,
         }
     ],
-    'LWP::UserAgent::Cached' => {
-        cache_dir => "/tmp/CPANasium-$</"
+    'LWP::UserAgent::WithCache' => {
+        cache_root => "/tmp/CPANasium-$</"
     },
     'Pithub' => {
     },
-    'CPANasium::Aggregator' => {
+    Github => {
         client_id => 'd06849c1d34c0e8855dc',
         client_secret => '41ca8c462507062ecc373f2e83ad41eba5007188',
     },

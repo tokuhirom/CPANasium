@@ -20,7 +20,9 @@ sub run {
         my $src = $repos->cpanfile;
         next if $src =~ /<!DOCTYPE html>/;
 
-        my $cpanfile = Module::CPANfile::Safe->load_from_string($src);
+        my $tmpfile = File::Temp->new(UNLINK => 1);
+        print {$tmpfile} $src;
+        my $cpanfile = Module::CPANfile::Safe->load($tmpfile->filename);
         my $prereq_specs = $cpanfile->prereq_specs;
 
         # {
@@ -34,6 +36,11 @@ sub run {
         # };
         # TODO: bulk insert
         my $txn = $self->db->txn_scope;
+        $self->db->delete(
+            deps => {
+                repos_full_name => $repos->full_name,
+            },
+        );
         while (my ($phase, $x) = each %$prereq_specs) {
             while (my ($relationship, $y) = each %$x) {
                 while (my ($module, $version) = each %$y) {
@@ -51,6 +58,7 @@ sub run {
         }
         $txn->commit;
     }
+    print "DONE\n";
 }
 
 1;

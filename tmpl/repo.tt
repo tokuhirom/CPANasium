@@ -1,8 +1,9 @@
-[% WRAPPER 'include/layout.tt' %]
+[% WRAPPER 'include/layout.tt' WITH title=repo.full_name _ ' - CPANasium' %]
 
 <h1>[% repo.full_name %]</h1>
 
-<a href="[% repo.html_url %]">goto &amp;github;</a>
+<a target="_blank" href="[% repo.html_url %]">goto &amp;github;</a>
+
 
 <table class="table table-hover table-bordered">
 [% FOR v IN deps %]
@@ -14,5 +15,7 @@
     </tr>
 [% END %]
 </table>
+
+<pre>[% repo.cpanfile %]</pre>
 
 [% END %]

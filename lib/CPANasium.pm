@@ -7,10 +7,9 @@ our $VERSION='0.01';
 use 5.008001;
 
 
-use CPANasium::Aggregator;
 use DBI;
 use Teng::Schema::Loader;
-use LWP::UserAgent::Cached;
+use LWP::UserAgent::WithCache;
 use Pithub;
 use JSON::XS;
 
@@ -46,14 +45,16 @@ has db => (
     },
 );
 
-has ua_cached => (
+has ua => (
     is => 'ro',
     lazy => 1,
     default => sub {
         my $c = shift;
-        my $conf = $c->config->{'LWP::UserAgent::Cached'} // die;
-        LWP::UserAgent::Cached->new(
+        my $conf = $c->config->{'LWP::UserAgent::WithCache'} // die;
+        LWP::UserAgent::WithCache->new(
             timeout => 6,
+            namespace => 'lwp-cache',
+            default_expires_in => 600,
             %$conf
         );
     }
@@ -67,25 +68,9 @@ has pithub => (
         my $conf = $c->config->{'Pithub'} // die;
         Pithub->new(
             %$conf,
-            ua => $c->ua_cached,
+            ua => $c->ua,
             auto_pagination => 1,
         );
-    },
-);
-
-has aggregator => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        my $conf = $self->config->{'CPANasium::Aggregator'} // die;
-        CPANasium::Aggregator->new(
-            %$conf,
-            db => $self->db,
-            ua => $self->ua_cached,
-            json => $self->json,
-            pithub => $self->pithub,
-        )
     },
 );
 
@@ -95,8 +80,33 @@ use Module::Load;
 
 sub batch {
     my ($self, $name) = @_;
-    Module::Load::load("CPANasium::Batch::$name");
-    "CPANasium::Batch::$name"->new(db => $self->db);
+    $self->load_component('Batch', $name);
 }
+
+sub model {
+    my ($self, $name) = @_;
+    $self->load_component('Model', $name);
+}
+
+sub load_component {
+    my ($self, $base, $name) = @_;
+
+    $self->{"$base#$name"} //= do {
+        my $klass = $name =~ s/^\+// ? $name : "CPANasium::${base}::$name";
+        Module::Load::load($klass);
+        my %params;
+        for my $attr ($klass->meta->get_attribute_list) {
+            if ($attr eq 'c') {
+                $params{c} = $self;
+            } else {
+                $params{$attr} = $self->$attr;
+            }
+        }
+        $klass->new(%params);
+    };
+}
+
+sub client_id { shift->config->{Github}->{client_id} }
+sub client_secret { shift->config->{Github}->{client_secret} }
 
 1;

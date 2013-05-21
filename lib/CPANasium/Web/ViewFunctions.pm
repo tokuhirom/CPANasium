@@ -5,8 +5,9 @@ use utf8;
 use parent qw(Exporter);
 use Module::Functions;
 use File::Spec;
+use Time::Piece;
 
-our @EXPORT = get_public_functions();
+our @EXPORT = (get_public_functions(), 'localtime');
 
 sub commify {
     local $_  = shift;
