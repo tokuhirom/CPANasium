@@ -1,5 +1,6 @@
 requires 'perl', '5.12.0';
 
+requires 'DBD::mysql';
 requires 'Amon2'                           => '3.80';
 requires 'Amon2::Web';
 requires 'Amon2::Web::Dispatcher::Lite';
