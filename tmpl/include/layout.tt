@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <script src="[% uri_for('/static/js/jquery-1.9.1.min.js') %]"></script>
-    <link href="[% uri_for('/static/bootstrap/css/bootstrap.css') %]" rel="stylesheet" type="text/css" />
     <script src="[% uri_for('/static/bootstrap/js/bootstrap.js') %]"></script>
     <script src="[% uri_for('/static/js/es5-shim.min.js') %]"></script>
     <script src="[% uri_for('/static/js/micro_template.js') %]"></script>
@@ -16,6 +15,8 @@
     <script src="[% uri_for('/static/js/sprintf-0.7-beta1.js') %]"></script>
     <script src="[% uri_for('/static/js/micro-location.js') %]"></script>
     <script src="[% uri_for('/static/js/micro_dispatcher.js') %]"></script>
+    <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
     <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen" />
     <script src="[% static_file('/static/js/main.js') %]"></script>
     <!--[if lt IE 9]>

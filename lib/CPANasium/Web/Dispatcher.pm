@@ -15,7 +15,7 @@ any '/' => sub {
         )];
     }
     my @authors = $c->db->search_by_sql(q{SELECT owner_login, count(*) count FROM repos GROUP BY owner_login ORDER BY count(*) DESC});
-    my @recent_repos = $c->db->search_by_sql(q{select full_name, created_on from repos order by id desc limit 10;});
+    my @recent_repos = $c->db->search_by_sql(q{select full_name, created_at, updated_at from repos order by updated_at desc limit 10;});
     return $c->render('index.tt', {
         deps_ranking => \%deps_ranking,
         authors      => \@authors,
@@ -43,7 +43,7 @@ get '/user/:user' => sub {
     my $user = $args->{user};
 
     my @repos = $c->db->search_by_sql(
-        q{SELECT * FROM repos WHERE owner_login=?},
+        q{SELECT * FROM repos WHERE owner_login=? order by updated_at desc},
         [$user],
     );
 

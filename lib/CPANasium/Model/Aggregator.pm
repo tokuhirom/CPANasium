@@ -6,6 +6,7 @@ use Web::Query;
 use Log::Minimal;
 use File::Temp ();
 use Module::CPANfile::Safe;
+use Time::Piece qw(localtime gmtime);
 
 my $URL = 'https://github.com/languages/Perl/updated';
 
@@ -68,6 +69,12 @@ sub get_repo_list {
     $result;
 }
 
+# @args $time '2013-05-23T04:40:16Z'
+sub parse_time {
+    my ($self, $time) = @_;
+    gmtime->strptime($time, '%Y-%m-%dT%H:%M:%SZ');
+}
+
 # @args $result: Pithub::Result
 sub insert {
     my ($self, $result) = @_;
@@ -98,7 +105,8 @@ sub insert {
             'description' => $row->{description},
             forks         => $row->{forks},
             owner_login   => $row->{owner}->{login},
-            created_on    => time,
+            updated_at    => $self->parse_time($row->{updated_at})->epoch,
+            created_at    => $self->parse_time($row->{created_at})->epoch,
         };
         my $cpanfile = sprintf 'https://raw.github.com/%s/master/cpanfile', $row->{full_name}, $row->{master_branch};
         infof("Fetching cpanfile from %s", $cpanfile);

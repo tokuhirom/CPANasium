@@ -38,7 +38,7 @@
 <div>
     <table class="table">
         [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a></td><td>[% localtime(v.created_on).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
+        <tr><td>[% loop.count %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
         [% END %]
     </table>
 </div>

@@ -1,6 +1,6 @@
 [% WRAPPER 'include/layout.tt' WITH title=user _ ' - CPANasium' %]
 
-<h1>[% user %]'s statistics.</h1>
+<h1>[% user %]'s statistics. <a href="http://github.com/[% user %]/"><i class="icon-github"></i></a></h1>
 
 <h2>[% user %] uses these modules:</h2>
 
@@ -27,7 +27,9 @@
 <table class="table table-hover">
 [% FOR repo IN repos %]
     <tr>
-        <td><a href="/user/[% repo.full_name %]">[% repo.name %][% IF repo.description %] - [% repo.description %][% END %]</a></td>
+        <td><a href="/user/[% repo.full_name %]">[% repo.name %]</a></td>
+        <td>[% IF repo.description %][% repo.description %][% END %]</td>
+        <td>[% localtime(repo.updated_at).strftime('%Y-%m-%d %H:%M') %]</td>
     </tr>
 [% END %]
 </table>

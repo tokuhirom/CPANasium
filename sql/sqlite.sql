@@ -11,10 +11,12 @@ CREATE TABLE repos (
     forks    integer,
     data      text,
     cpanfile  text,
-    created_on integer
+    updated_at integer,
+    created_at integer
 );
 create index repos_owner_login on repos (owner_login);
 create unique index repos_full_name on repos (full_name);
+create index repos_updated_at on repos (updated_at);
 
 
 create table deps (
