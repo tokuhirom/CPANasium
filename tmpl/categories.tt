@@ -1,0 +1,29 @@
+[% WRAPPER 'include/layout.tt' WITH title="Categories - CPANasium" %]
+
+<h2>Categories</h2>
+
+<hr />
+
+<div class="marketing">
+    <div class="row">
+        [% FOR category IN categories %]
+        <div class="span4">
+            <h2 style="min-height: 90px">[% category.title %]</h2>
+            <div>
+                <table class="table">
+                    [% FOR v IN category.summary %]
+                    <tr>
+                        <td align="right">[% loop.count %]</td>
+                        <td><a href="/module/[% v.module %]">[% v.module %]</a></td>
+                        <td>[% v.count %]</td>
+                    </tr>
+                    [% END %]
+                </table>
+            </div>
+        </div>
+        [% END %]
+    </div>
+</div>
+
+
+[% END %]

@@ -30,7 +30,8 @@
                 <a class="brand" href="/">CPANasium</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li class="active"><a href="/">Home</a></li>
+                        <li [% IF c().req.path_info=='/' %]class="active"[% END %]><a href="/">Home</a></li>
+                        <li [% IF c().req.path_info=='/categories' %]class="active"[% END %]><a href="/categories">Categories</a></li>
                     </ul>
                 </div>
             </div>

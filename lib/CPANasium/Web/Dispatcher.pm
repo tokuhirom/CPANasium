@@ -23,6 +23,45 @@ any '/' => sub {
     });
 };
 
+get '/categories' => sub {
+    my $c = shift;
+
+    my @categories = (
+        {
+            title => 'Web Application Frameworks',
+            modules => [
+                'Mojolicious',
+                'Amon2',
+                'Catalyst',
+                'Web::Simple',
+            ],
+        },
+        {
+            title => 'OO',
+            modules => [
+                'Class::Accessor::Fast',
+                'Class::Accessor::Lite',
+                'Moose',
+                'Mouse',
+                'Moo',
+            ],
+        },
+    );
+    for my $category (@categories) {
+        my @modules = @{$category->{modules}};
+        my @summary = $c->db->search_by_sql(
+            q{SELECT module, count(*) as count FROM deps WHERE module IN (} . join(',', ('?')x@modules) . ') GROUP BY module order by count desc',
+            [@modules],
+        );
+        $category->{summary} = \@summary;
+    }
+    $c->render(
+        'categories.tt' => {
+            categories => \@categories,
+        }
+    );
+};
+
 get '/module/:module' => sub {
     my ($c, $args) = @_;
     my $module = $args->{module};
