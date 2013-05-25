@@ -104,6 +104,7 @@ sub insert {
             owner_avatar_url => $row->{owner}->{avatar_url},
             'description' => $row->{description},
             forks         => $row->{forks},
+            watchers      => $row->{watchers},
             owner_login   => $row->{owner}->{login},
             updated_at    => $self->parse_time($row->{updated_at})->epoch,
             created_at    => $self->parse_time($row->{created_at})->epoch,
