@@ -21,3 +21,4 @@ MYMETA.yml
 !Build/
 !META.json
 !LICENSE
+/config/production.pl
