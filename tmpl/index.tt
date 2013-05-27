@@ -1,8 +1,17 @@
 [% WRAPPER 'include/layout.tt' %]
 
-<h1 style="padding: 70px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">CPANasium</h1>
+<div>
+<strong>Repository</strong>
+&nbsp;
+[% FOR h IN count_repos %]
+    <span>[% h.host_type %]: [% h.count %]</span>
+[% END %]
+</div>
+
+
+<h1 style="padding: 70px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Mikutterasium</h1>
 <div class="row">
-    <p style="text-align: center;">This site aggregates repositories contain cpanfile from github.</p>
+    <p style="text-align: center;">This site aggregates repositories contain mikutter from (gist.)github.</p>
 </div>
 
 <hr />
@@ -11,34 +20,16 @@
     .marketing .row {
         margin-top: 20px;
     }
+    .description {
+        font-size: small;
+    }
 </style>
-<h2>What's popular?</h2>
-<div class="marketing">
-    <div class="row">
-        [% FOR phase IN ['runtime', 'configure', 'test', 'build', 'develop'] %]
-        <div class="span4">
-            <h2>[% phase | ucfirst %] Deps</h2>
-            <div>
-                <table class="table">
-                    [% FOR v IN deps_ranking[phase] %]
-                    <tr>
-                        <td align="right">[% loop.count %]</td>
-                        <td><a href="/module/[% v.module %]">[% v.module %]</a></td>
-                        <td>[% v.count %]</td>
-                    </tr>
-                    [% END %]
-                </table>
-            </div>
-        </div>
-        [% END %]
-    </div>
-</div>
 
 <h1>Recent repositories</h1>
 <div>
     <table class="table">
         [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
+        <tr><td>[% loop.count %]</td><td><a target="_blank" href="[% v.html_url %]">[% v.full_name %]</a></td><td><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
         [% END %]
     </table>
 </div>

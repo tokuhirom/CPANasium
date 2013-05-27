@@ -1,4 +1,4 @@
-package CPANasium::Model::Aggregator;
+package CPANasium::Model::GistAggregator;
 use strict;
 use warnings;
 use utf8;
@@ -9,8 +9,9 @@ use Module::CPANfile::Safe;
 use Time::Piece qw(localtime gmtime);
 use JSON;
 use LWP::UserAgent;
+use MIME::Base64 qw(encode_base64);
 
-my $URL = 'https://api.github.com/legacy/repos/search/mikutter';
+my $URL = 'https://gist.github.com/search?q=mikutter';
 
 use Mouse;
 
@@ -25,21 +26,30 @@ has pithub => (is => 'ro', required => 1);
 no Mouse;
 
 # @return ('miyagawa/CGI-Compile', 'tokuhirom/Amon', ...)
-sub get_updated_repo_list {
+sub get_gist_list {
     my ($self, $page) = @_;
+    my $wq = wq($URL . ($page ? "&page=$page" : ''))->find('.gist-item a .css-truncate-target')->map(sub {
+        my ($i, $elem) = @_;
+        my $href = $elem->parent->attr('href');#text;
+        $href;
+    });
+    return @$wq;
+}
 
-    my $ua = LWP::UserAgent->new;
-    my $res = $ua->get($URL . '?sort=updated&page=' . $page);
-    my @wq;
-    # use Data::Dumper; warn Dumper $res;
-    if ($res->is_success) {
-        my $result = JSON::from_json($res->content);
-        for my $repo( @{$result->{repositories}} ) {
-            push(@wq, "$repo->{username}/$repo->{name}");
-            warn "$repo->{username}/$repo->{name}";
-        }
-    }
-    return @wq;
+# @args $repo: 'miyagawa/CGI-Compile'
+sub get_gist_info {
+    my ($self, $repo) = @_;
+
+    my ($gist_id) = $repo =~ m! .+/(.*?)$ !x;
+
+    #バグ回避のためのダミー
+    #おそらく画像のせいでJSONエンコードがコケる
+    $gist_id = '5653398' if $gist_id eq '5435877';
+    $gist_id = '5653398' if $gist_id eq '5232390';
+    my $res = $self->pithub->gists->get(
+        gist_id => $gist_id
+    );
+    return $res;
 }
 
 # get_repo_list('users', 'miyagawa');
@@ -106,18 +116,18 @@ sub insert {
         next if $row->{fork};
 
         my $params = +{
-            master_branch => $row->{master_branch},
+            master_branch => 'master',
             html_url      => $row->{html_url},
-            name          => $row->{name},
-            full_name     => $row->{full_name},
-            owner_avatar_url => $row->{owner}->{avatar_url},
+            name          => $row->{id},
+            full_name     => $row->{user}->{login} . '/' . $row->{id},
+            owner_avatar_url => $row->{user}->{avatar_url},
             'description' => $row->{description},
-            forks         => $row->{forks},
+            forks         => '', #$row->{forks},
             watchers      => $row->{watchers} || '',
-            owner_login   => $row->{owner}->{login},
+            owner_login   => $row->{user}->{login},
             updated_at    => $self->parse_time($row->{updated_at})->epoch,
             created_at    => $self->parse_time($row->{created_at})->epoch,
-            host_type     => 'github',
+            host_type     => 'gist',
         };
         my $r = $self->db->replace(
             repos => {
@@ -130,7 +140,6 @@ sub insert {
         ## $row->{watchers};
         ## $row->{master_branch};
         ## $row->{html_url};
-        # use Data::Dumper; warn Dumper($row);
     }
 }
 

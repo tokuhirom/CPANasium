@@ -1,4 +1,4 @@
-[% WRAPPER 'include/layout.tt' WITH title="Categories - CPANasium" %]
+[% WRAPPER 'include/layout.tt' WITH title="Categories - Mikutterasium" %]
 
 <h2>Categories</h2>
 

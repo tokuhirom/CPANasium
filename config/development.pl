@@ -19,7 +19,7 @@ mkpath("/tmp/CPANasium-$<");
     'Pithub' => {
     },
     Github => {
-        client_id => 'd06849c1d34c0e8855dc',
-        client_secret => '41ca8c462507062ecc373f2e83ad41eba5007188',
+        client_id => 'CLIENT_ID',
+        client_secret => 'CLIENT_SECRET',
     },
 };

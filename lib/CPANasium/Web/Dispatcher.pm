@@ -14,12 +14,14 @@ any '/' => sub {
             [$phase],
         )];
     }
+    my @count_repos = $c->db->search_by_sql(q{select host_type, count(host_type) as `count` from repos group by host_type});
     my @authors = $c->db->search_by_sql(q{SELECT owner_login, count(*) count FROM repos GROUP BY owner_login ORDER BY count(*) DESC});
-    my @recent_repos = $c->db->search_by_sql(q{select full_name, created_at, updated_at from repos order by updated_at desc limit 10;});
+    my @recent_repos = $c->db->search_by_sql(q{select full_name, html_url, description, created_at, updated_at from repos order by updated_at desc limit 20;});
     return $c->render('index.tt', {
         deps_ranking => \%deps_ranking,
         authors      => \@authors,
         recent_repos => \@recent_repos,
+        count_repos  => \@count_repos,
     });
 };
 

@@ -1,10 +1,12 @@
 CREATE TABLE repos (
     id integer not null primary key,
+    host_type varchar(255), -- "gist" or "github"
     name varchar(255),
     owner_login varchar(255),
     full_name varchar(255),
     master_branch varchar(255),
     html_url text,
+    repo_url text,
     owner_avatar_url varchar(255),
     description varchar(255),
     watchers integer,

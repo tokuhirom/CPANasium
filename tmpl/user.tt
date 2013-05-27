@@ -1,33 +1,12 @@
-[% WRAPPER 'include/layout.tt' WITH title=user _ ' - CPANasium' %]
+[% WRAPPER 'include/layout.tt' WITH title=user _ ' - Mikutterasium' %]
 
-<h1>[% user %]'s statistics. <a href="http://github.com/[% user %]/"><i class="icon-github"></i></a></h1>
-
-<h2>[% user %] uses these modules:</h2>
-
-<div class="row">
-    [% FOR phase IN ['runtime', 'configure', 'test'] %]
-    <div class="span4">
-        <h2>[% phase | ucfirst %] Deps</h2>
-        <div>
-            <table>
-                [% FOR v IN deps_ranking[phase] %]
-                <tr>
-                    <td align="right">[% loop.count %]</td>
-                    <td><a href="/module/[% v.module %]">[% v.module %]</a></td>
-                    <td>[% v.count %]</td>
-                </tr>
-                [% END %]
-            </table>
-        </div>
-    </div>
-    [% END %]
-</div>
+<h1>[% user %]'s statistics. <a href="http://github.com/[% user %]/"><i class="icon-github"></i></a> <a href="https://gist.github.com/[% user %]"><i class="icon-gist">Gist</i></a></h1>
 
 <h2>[% user %]'s repos:</h2>
 <table class="table table-hover">
 [% FOR repo IN repos %]
     <tr>
-        <td><a href="/user/[% repo.full_name %]">[% repo.name %]</a></td>
+        <td><a target="_blank" href="[% repo.html_url%]">[% repo.name %]</a></td>
         <td>[% IF repo.description %][% repo.description %][% END %]</td>
         <td>[% localtime(repo.updated_at).strftime('%Y-%m-%d %H:%M') %]</td>
     </tr>

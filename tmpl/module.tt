@@ -1,4 +1,4 @@
-[% WRAPPER 'include/layout.tt' WITH title=module _ ' - CPANasium' %]
+[% WRAPPER 'include/layout.tt' WITH title=module _ ' - Mikutterasium' %]
 
 <h1>[% module %] is depended by:</h1>
 
