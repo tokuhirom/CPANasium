@@ -15,13 +15,26 @@ any '/' => sub {
         )];
     }
     my @count_repos = $c->db->search_by_sql(q{select host_type, count(host_type) as `count` from repos group by host_type});
-    my @authors = $c->db->search_by_sql(q{SELECT owner_login, count(*) count FROM repos GROUP BY owner_login ORDER BY count(*) DESC});
+    my @authors = $c->db->search_by_sql(q{SELECT owner_login, count(*) count FROM repos GROUP BY owner_login ORDER BY count(*) DESC LIMIT 10});
     my @recent_repos = $c->db->search_by_sql(q{select full_name, html_url, description, created_at, updated_at from repos order by updated_at desc limit 20;});
     return $c->render('index.tt', {
         deps_ranking => \%deps_ranking,
         authors      => \@authors,
         recent_repos => \@recent_repos,
         count_repos  => \@count_repos,
+    });
+};
+
+get '/authors' => sub {
+    my ($c) = @_;
+    my $page = $c->req->param('page') || 1;
+    my ($authors, $pager) = $c->db->search_with_pager(
+        'repos' => {},
+            {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 20,
+            columns => [\'count(*) as count', 'owner_login']});
+    return $c->render('authors.tt', {
+        authors => $authors,
+        pager   => $pager,
     });
 };
 
@@ -77,6 +90,8 @@ get '/module/:module' => sub {
         module => $module,
         repos => \@repos,
     });
+};
+
 };
 
 get '/user/:user' => sub {

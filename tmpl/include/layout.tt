@@ -31,6 +31,7 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li [% IF c().req.path_info=='/' %]class="active"[% END %]><a href="/">Home</a></li>
+                        <li [% IF c().req.path_info=='/authors' %]class="active"[% END %]><a href="/authors">Authors</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 [% IF pager %]
-    <div class="pagination">
+    <div class="pagination" style="text-align:center;">
         <ul>
             [% IF pager.previous_page %]
                 <li class="prev"><a href="[% uri_with({page => pager.previous_page}) %]" rel="previous">&larr; Back</a><li>

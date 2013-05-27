@@ -1,0 +1,24 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<h1>Authors</h1>
+<div>
+    [% INCLUDE 'include/pager.tt' %]
+    <table class="table">
+        <thead>
+        <tr>
+          <td></td>
+          <td>Author</td>
+          <td>Repos</td>
+        </tr>
+        </thead>
+        <tbody>
+        [% FOR v IN authors %]
+        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
+        [% END %]
+        </tbody>
+    </table>
+    [% INCLUDE 'include/pager.tt' %]
+</div>
+
+
+[% END %]
