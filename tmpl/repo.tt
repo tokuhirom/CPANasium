@@ -1,7 +1,7 @@
 [% WRAPPER 'include/layout.tt' WITH title=repo.full_name _ ' - CPANasium' %]
 
 <div class="row">
-    <h1><a href="/user/[% repo.owner_login %]/">[% repo.owner_login %]</a>/[% repo.name %] <a target="_blank" href="[% repo.html_url %]"><i class="icon-github-sign"></i></a></h1>
+    <h1><a href="/user/[% repo.owner_login %]">[% repo.owner_login %]</a>/[% repo.name %] <a target="_blank" href="[% repo.html_url %]"><i class="icon-github-sign"></i></a></h1>
     <p>[% repo.description %]</p>
 
     <table class="table table-hover table-bordered">
