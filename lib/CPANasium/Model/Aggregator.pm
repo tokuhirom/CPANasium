@@ -36,7 +36,7 @@ sub get_updated_repo_list {
         my $result = JSON::from_json($res->content);
         for my $repo( @{$result->{repositories}} ) {
             push(@wq, "$repo->{username}/$repo->{name}");
-            warn "$repo->{username}/$repo->{name}";
+            #warn "$repo->{username}/$repo->{name}";
         }
     }
     return @wq;
