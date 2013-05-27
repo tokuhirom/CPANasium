@@ -5,6 +5,7 @@ requires 'Amon2'                           => '3.80';
 requires 'Amon2::Web';
 requires 'Amon2::Web::Dispatcher::Lite';
 requires 'autodie';
+requires 'Data::Page::Navigation';
 requires 'DBD::SQLite'                     => '1.33';
 requires 'DBI';
 requires 'File::Temp';
