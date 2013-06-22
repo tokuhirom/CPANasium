@@ -5,7 +5,7 @@
     [% INCLUDE 'include/pager.tt' %]
     <table class="table">
         [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td><a target="_blank" href="[% v.html_url %]">[% v.full_name %]</a></td><td><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
+        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a></td><td><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
         [% END %]
     </table>
     [% INCLUDE 'include/pager.tt' %]
