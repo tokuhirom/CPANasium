@@ -118,7 +118,8 @@ sub insert {
         my $data = $self->json->encode($row);
         my $repo_class = "";
         for my$_data ($data, $row->{html_url}, $row->{full_name}, $row->{description}) {
-            $repo_class = "plugin" if $_data =~ m/(plugin)|(プラグイン)|(ﾌﾟﾗｸﾞｲﾝ)/i;
+            next unless $_data;
+            $repo_class = "plugin" if ($_data =~ m/(plugin)|(プラグイン)|(ﾌﾟﾗｸﾞｲﾝ)/i);
         }
 
         my $params = +{
