@@ -16,8 +16,8 @@ any '/' => sub {
     }
     my @count_repos = $c->db->search_by_sql(q{select host_type, count(host_type) as `count` from repos group by host_type});
     my @count_authors = $c->db->search_by_sql(q{select distinct(owner_login) from repos});
-    my @authors = $c->db->search_by_sql(q{SELECT owner_login, count(*) as `count` FROM repos GROUP BY owner_login ORDER BY count(*) DESC LIMIT 10});
-    my @recent_repos = $c->db->search_by_sql(q{select full_name, html_url, description, created_at, updated_at from repos order by updated_at desc limit 10;});
+    my @authors = $c->db->search_by_sql(q{SELECT owner_login, owner_avatar_url, count(*) as `count` FROM repos GROUP BY owner_login ORDER BY count(*) DESC LIMIT 10});
+    my @recent_repos = $c->db->search_by_sql(q{select owner_avatar_url, full_name, html_url, description, created_at, updated_at from repos order by updated_at desc limit 10;});
 
     return $c->render('index.tt', {
         deps_ranking => \%deps_ranking,
@@ -28,13 +28,18 @@ any '/' => sub {
     });
 };
 
+get '/about' => sub {
+    my ($c) = @_;
+    return $c->render('about.tt');
+};
+
 get '/authors' => sub {
     my ($c) = @_;
     my $page = $c->req->param('page') || 1;
     my ($authors, $pager) = $c->db->search_with_pager(
         'repos' => {},
             {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 50,
-            columns => [\'count(*) as count', 'owner_login']});
+            columns => [\'count(*) as count', 'owner_login', 'owner_avatar_url']});
     return $c->render('authors.tt', {
         authors => $authors,
         pager   => $pager,

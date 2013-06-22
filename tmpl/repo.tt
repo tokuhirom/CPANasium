@@ -1,7 +1,7 @@
 [% WRAPPER 'include/layout.tt' WITH title=repo.full_name _ ' - Mikutterasium' %]
 
 <div class="row">
-    <h1><a href="/user/[% repo.owner_login %]">[% repo.owner_login %]</a>/[% repo.name %] <a target="_blank" href="[% repo.html_url %]"><i class="icon-github-sign"></i></a></h1>
+    <h1><a href="/user/[% repo.owner_login %]"><img style="width:48px;" src="[% repo.owner_avatar_url %]">[% repo.owner_login %]</a>/[% repo.name %] <a target="_blank" href="[% repo.html_url %]"><i class="icon-github-sign"></i></a></h1>
     <p>[% repo.description %]</p>
 
     [% IF repo.host_type == 'gist' %]<script src="https://gist.github.com/[% repo.full_name %].js"></script>[% END %]

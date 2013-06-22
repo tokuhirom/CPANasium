@@ -13,6 +13,7 @@
     }
     .description {
         font-size: small;
+        color: #888;
     }
 </style>
 
@@ -20,7 +21,7 @@
 <div class="row">
     <table class="table">
         [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a></td><td><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></li>
+        <tr><td>[% loop.count %]</td><td><img style="width:48px;height:48px;" src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></tr>
         [% END %]
     </table>
     <a href="/recent" class="pull-right">More...</a>
@@ -32,12 +33,12 @@
         <thead>
         <tr>
           <th></th>
-          <th>Author</th>
+          <th colspan="2">Author</th>
           <th>Repos</th>
         </tr>
         </thead>
         [% FOR v IN authors %]
-        <tr><td>[% loop.count %]</td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></li>
+        <tr><td class="span1">[% loop.count %]</td><td style="width:48px;"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
         [% END %]
     </table>
     <a href="/authors" class="pull-right">More...</a>
