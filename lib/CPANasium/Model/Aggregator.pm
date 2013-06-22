@@ -29,7 +29,7 @@ sub get_updated_repo_list {
     my ($self, $page) = @_;
 
     my $ua = LWP::UserAgent->new;
-    my $res = $ua->get($URL . '?sort=updated&page=' . $page);
+    my $res = $ua->get($URL . '?sort=updated&start_page=' . $page);
     my @wq;
     # use Data::Dumper; warn Dumper $res;
     if ($res->is_success) {
