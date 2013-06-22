@@ -33,7 +33,7 @@ get '/authors' => sub {
     my $page = $c->req->param('page') || 1;
     my ($authors, $pager) = $c->db->search_with_pager(
         'repos' => {},
-            {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 20,
+            {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 50,
             columns => [\'count(*) as count', 'owner_login']});
     return $c->render('authors.tt', {
         authors => $authors,
@@ -99,7 +99,7 @@ get '/recent' => sub {
     my ($c) = @_;
 
     my $page = $c->req->param('page') || 1;
-    my ($recent_repos, $pager) = $c->db->search_with_pager('repos' => {}, {order_by => 'updated_at desc', page => $page, rows => 20});
+    my ($recent_repos, $pager) = $c->db->search_with_pager('repos' => {}, {order_by => 'updated_at desc', page => $page, rows => 50});
     return $c->render('recent.tt', {
         recent_repos => $recent_repos,
         pager => $pager,
