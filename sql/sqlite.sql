@@ -1,6 +1,7 @@
 CREATE TABLE repos (
     id integer not null primary key,
     host_type varchar(255), -- "gist" or "github"
+    repo_class varchar(255), -- "plugin" or ""
     name varchar(255),
     owner_login varchar(255),
     full_name varchar(255),

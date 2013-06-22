@@ -105,6 +105,12 @@ sub insert {
         next if $row->{private};
         next if $row->{fork};
 
+        my $data = $self->json->encode($row);
+        my $repo_class = "";
+        for my$_data ($data, $row->{html_url}, $row->{full_name}, $row->{description}) {
+            $repo_class = "plugin" if $_data =~ m/(plugin)|(プラグイン)|(ﾌﾟﾗｸﾞｲﾝ)/i;
+        }
+
         my $params = +{
             master_branch => $row->{master_branch},
             html_url      => $row->{html_url},
@@ -118,11 +124,12 @@ sub insert {
             updated_at    => $self->parse_time($row->{updated_at})->epoch,
             created_at    => $self->parse_time($row->{created_at})->epoch,
             host_type     => 'github',
+            repo_class    => $repo_class,
         };
         my $r = $self->db->replace(
             repos => {
                 %$params,
-                data     => $self->json->encode($row),
+                data     => $data,
                 cpanfile => '', #$cpanfile,
             }
         );
