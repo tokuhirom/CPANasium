@@ -4,18 +4,14 @@
     <h1><a href="/user/[% repo.owner_login %]">[% repo.owner_login %]</a>/[% repo.name %] <a target="_blank" href="[% repo.html_url %]"><i class="icon-github-sign"></i></a></h1>
     <p>[% repo.description %]</p>
 
-    <table class="table table-hover table-bordered">
-    [% FOR v IN deps %]
-        <tr>
-            <td>[% v.phase %]</td>
-            <td>[% v.relationship %]</td>
-            <td><a href="/module/[% v.module %]">[% v.module %]</a></td>
-            <td>[% v.version %]</td>
-        </tr>
+    [% IF repo.host_type == 'gist' %]<script src="https://gist.github.com/[% repo.full_name %].js"></script>[% END %]
+    [% IF repo.host_type == 'github' %]
+        <div id="repo"></div>
+        <script src="/static/js/repo.min.js"></script>
+        <script type="text/javascript">
+            $('#repo').repo({ user: '[% repo.owner_login %]', name: '[% repo.name %]', branch: '[% repo.master_branch %]'});
+        </script>
     [% END %]
-    </table>
-
-    <pre>[% repo.cpanfile %]</pre>
 </div>
 
 [% IF c().req.param('debug') %]
