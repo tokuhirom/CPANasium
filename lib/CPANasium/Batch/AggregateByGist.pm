@@ -25,6 +25,7 @@ sub run {
             infof("Repo: %s", $repo);
             my $result = $aggregator->get_gist_info($repo);
             $aggregator->insert($result);
+            sleep 2;
         }
     }
 }
