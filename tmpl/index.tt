@@ -19,13 +19,6 @@
         color: #888;
         float: right;
     }
-    .icon {
-        width: 48px;
-    }
-    .icom img {
-        width: 48px;
-        height: 48px;
-    }
     .more {
         display: block;
         font-size: 16px;
@@ -47,7 +40,7 @@
             </thead>
             <tbody>
             [% FOR v IN recent_repos %]
-                <tr><td class="icon"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><span class="datetime">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span><div class="description">[% v.description %]</div></td></tr>
+                <tr><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><span class="datetime">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span><div class="description">[% v.description %]</div></td></tr>
             [% END %]
             </tbody>
         </table>
@@ -65,7 +58,7 @@
             </thead>
             <tbody>
             [% FOR v IN authors %]
-                <tr><td class="icon"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
+                <tr><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
             [% END %]
             <tbody>
         </table>

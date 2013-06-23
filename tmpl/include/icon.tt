@@ -1,0 +1,1 @@
+<a href="/user/[% v.owner_login %]"><img src="[% v.owner_avatar_url %]"></a>

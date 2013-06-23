@@ -17,3 +17,11 @@ footer {
 /* smart phones */
 @media screen and (max-device-width: 480px) {
 }
+
+.icon {
+    width: 48px;
+}
+.icom img {
+    width: 48px;
+    height: 48px;
+}
