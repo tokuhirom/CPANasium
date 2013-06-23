@@ -13,35 +13,64 @@
     }
     .description {
         font-size: small;
+        color: #444;
+    }
+    .datetime {
         color: #888;
+        float: right;
+    }
+    .icon {
+        width: 48px;
+    }
+    .icom img {
+        width: 48px;
+        height: 48px;
+    }
+    .more {
+        display: block;
+        font-size: 16px;
+        line-height: 2.0em;
+        text-align: right;
+    }
+    a.more:hover {
+        background-color: #DDD;
     }
 </style>
 
-<h1>Recent repositories</h1>
 <div class="row">
-    <table class="table">
-        [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count %]</td><td><img style="width:48px;height:48px;" src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></tr>
-        [% END %]
-    </table>
-    <a href="/recent" class="pull-right">More...</a>
-</div>
 
-<h1>Authors</h1>
-<div class="row">
-    <table class="table">
-        <thead>
-        <tr>
-          <th></th>
-          <th colspan="2">Author</th>
-          <th>Repos</th>
-        </tr>
-        </thead>
-        [% FOR v IN authors %]
-        <tr><td class="span1">[% loop.count %]</td><td style="width:48px;"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
-        [% END %]
-    </table>
-    <a href="/authors" class="pull-right">More...</a>
+    <div class="span8">
+        <h1>Recent repositories</h1>
+        <table class="table">
+            <thead>
+                <tr><th colspan="2">Repository</th></tr>
+            </thead>
+            <tbody>
+            [% FOR v IN recent_repos %]
+                <tr><td class="icon"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><span class="datetime">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span><div class="description">[% v.description %]</div></td></tr>
+            [% END %]
+            </tbody>
+        </table>
+        <a href="/recent" class="more"><i class="icon-plus-sign"></i>More...</a>
+    </div>
+
+    <div class="span4">
+        <h1>Authors</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th colspan="2">Author</th>
+                <th>Repos</th>
+            </tr>
+            </thead>
+            <tbody>
+            [% FOR v IN authors %]
+                <tr><td class="icon"><img src="[% v.owner_avatar_url %]" alt="[% v.owner_login %]"></td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
+            [% END %]
+            <tbody>
+        </table>
+        <a href="/authors" class="more"><i class="icon-plus-sign"></i>More...</a>
+    </div>
 </div>
 
 
