@@ -24,7 +24,7 @@ sub run {
             infof("Repo: %s", $repo);
             my $result = $aggregator->get_repo_info($repo);
             $aggregator->insert($result);
-            sleep 2;
+            sleep 5;
         }
     }
 

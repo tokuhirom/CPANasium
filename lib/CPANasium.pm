@@ -29,7 +29,7 @@ has json => (
     is => 'ro',
     lazy => 1,
     default => sub {
-        JSON::XS->new->ascii(1);
+        JSON::XS->new->ascii(1)->utf8(1);
     },
 );
 

@@ -23,7 +23,7 @@ requires 'Module::Load';
 requires 'Moo';
 requires 'Mouse';
 requires 'parent';
-requires 'Pithub', 0;
+requires 'Pithub', '0.01019';
 requires 'Plack::Builder';
 requires 'Plack::Middleware::ReverseProxy' => '0.09';
 requires 'Plack::Middleware::Session'      => '0';

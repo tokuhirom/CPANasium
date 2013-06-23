@@ -9,7 +9,8 @@ use Module::CPANfile::Safe;
 use Time::Piece qw(localtime gmtime);
 use JSON;
 use LWP::UserAgent;
-use MIME::Base64 qw(encode_base64);
+use Encode qw/encode decode/;
+use Encode::Guess;
 
 my $URL = 'https://gist.github.com/search?q=mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
 
@@ -44,8 +45,6 @@ sub get_gist_info {
 
     #バグ回避のためのダミー
     #おそらく画像のせいでJSONエンコードがコケる
-    $gist_id = '5653398' if $gist_id eq '5435877';
-    $gist_id = '5653398' if $gist_id eq '5232390';
     my $res = $self->pithub->gists->get(
         gist_id => $gist_id
     );
@@ -81,7 +80,7 @@ sub get_repo_list {
             client_id     => $self->client_id,
             client_secret => $self->client_secret,
             type          => 'public',
-            per_page      => 100000,
+            per_page      => 100,
         },
     );
     $result->auto_pagination(1);
@@ -130,7 +129,7 @@ sub insert {
             name          => $row->{id},
             full_name     => $row->{user}->{login} . '/' . $row->{id},
             owner_avatar_url => $row->{user}->{avatar_url},
-            'description' => $row->{description},
+            'description' => $self->decode($row->{description}),
             forks         => '', #$row->{forks},
             watchers      => $row->{watchers} || '',
             owner_login   => $row->{user}->{login},
@@ -194,6 +193,17 @@ sub analyze_cpanfile {
     }
     $txn->commit;
 }
+
+sub decode {
+    my ($self, $data) = @_;
+
+    my $enc = guess_encoding($data, qw/utf8 euc-jp sjis/);
+    ref $enc or return $data;
+    $enc->decode($data);
+
+    return $data;
+}
+
 
 1;
 

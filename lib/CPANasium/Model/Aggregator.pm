@@ -71,7 +71,7 @@ sub get_repo_list {
             client_id     => $self->client_id,
             client_secret => $self->client_secret,
             type          => 'public',
-            per_page      => 100000,
+            per_page      => 100,
         },
     );
     $result->auto_pagination(1);
@@ -117,7 +117,7 @@ sub insert {
             name          => $row->{name},
             full_name     => $row->{full_name},
             owner_avatar_url => $row->{owner}->{avatar_url},
-            'description' => $row->{description},
+            'description' => $self->decode($row->{description}),
             forks         => $row->{forks},
             watchers      => $row->{watchers} || '',
             owner_login   => $row->{owner}->{login},
@@ -183,6 +183,16 @@ sub analyze_cpanfile {
         }
     }
     $txn->commit;
+}
+
+sub decode {
+    my ($self, $data) = @_;
+
+    my $enc = guess_encoding($data, qw/utf8 euc-jp sjis/);
+    ref $enc or return $data;
+    $enc->decode($data);
+
+    return $data;
 }
 
 1;
