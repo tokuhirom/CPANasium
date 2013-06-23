@@ -9,8 +9,10 @@ use Module::CPANfile::Safe;
 use Time::Piece qw(localtime gmtime);
 use JSON;
 use LWP::UserAgent;
+use Encode qw/encode decode/;
+use Encode::Guess;
 
-my $URL = 'https://api.github.com/legacy/repos/search/mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
+my $URL = 'https://api.github.com/legacy/repos/search/mikutter%20OR%20%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
 
 use Mouse;
 
@@ -71,7 +73,7 @@ sub get_repo_list {
             client_id     => $self->client_id,
             client_secret => $self->client_secret,
             type          => 'public',
-            per_page      => 100,
+            per_page      => 200,
         },
     );
     $result->auto_pagination(1);
