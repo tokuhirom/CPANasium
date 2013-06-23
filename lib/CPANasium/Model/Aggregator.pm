@@ -10,7 +10,7 @@ use Time::Piece qw(localtime gmtime);
 use JSON;
 use LWP::UserAgent;
 
-my $URL = 'https://api.github.com/legacy/repos/search/mikutter';
+my $URL = 'https://api.github.com/legacy/repos/search/mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
 
 use Mouse;
 

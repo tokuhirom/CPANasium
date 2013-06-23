@@ -11,7 +11,7 @@ use JSON;
 use LWP::UserAgent;
 use MIME::Base64 qw(encode_base64);
 
-my $URL = 'https://gist.github.com/search?q=mikutter';
+my $URL = 'https://gist.github.com/search?q=mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
 
 use Mouse;
 
