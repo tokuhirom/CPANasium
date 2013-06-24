@@ -1,0 +1,22 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<style>
+    .description {
+        font-size: small;
+        color: #666;
+    }
+</style>
+
+<h1>Random repositories</h1>
+<p>Mikutterasiumに登録されてるレポジトリのうち、ランダムに10件表示しています。<a class="btn btn-success" href="/random">更新</a></p>
+<div>
+    [% INCLUDE 'include/pager.tt' %]
+    <table class="table">
+        [% FOR v IN repos %]
+        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td><td style="white-space:nowrap;">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></tr>
+        [% END %]
+    </table>
+    [% INCLUDE 'include/pager.tt' %]
+</div>
+
+[% END %]

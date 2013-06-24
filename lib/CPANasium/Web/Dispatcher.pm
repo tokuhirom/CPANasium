@@ -154,4 +154,16 @@ get '/user/:user/:module' => sub {
     });
 };
 
+
+any '/random' => sub {
+    my ($c) = @_;
+
+    my @repos = $c->db->search_by_sql(q{select * from repos order by rand() limit 10});
+
+    return $c->render('random.tt', {
+        repos => \@repos,
+    });
+};
+
+
 1;

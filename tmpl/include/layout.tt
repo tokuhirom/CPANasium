@@ -33,6 +33,7 @@
                         <li [% IF c().req.path_info=='/' %]class="active"[% END %]><a href="/">Home</a></li>
                         <li [% IF c().req.path_info=='/recent' %]class="active"[% END %]><a href="/recent">Recent</a></li>
                         <li [% IF c().req.path_info=='/authors' %]class="active"[% END %]><a href="/authors">Authors</a></li>
+                        <li [% IF c().req.path_info=='/random' %]class="active"[% END %]><a href="/random">Random</a></li>
                     </ul>
                 </div>
             </div>
