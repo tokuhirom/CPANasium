@@ -32,16 +32,21 @@ sub get_updated_repo_list {
 
     my $ua = LWP::UserAgent->new;
     my $res = $ua->get($URL . '?sort=updated&start_page=' . $page);
-    my @wq;
-    # use Data::Dumper; warn Dumper $res;
-    if ($res->is_success) {
-        my $result = JSON::from_json($res->content);
-        for my $repo( @{$result->{repositories}} ) {
-            push(@wq, "$repo->{username}/$repo->{name}");
-            #warn "$repo->{username}/$repo->{name}";
-        }
+
+    infof("API: %d/%d",
+        $res->header('X-RateLimit-Remaining'),
+        $res->header('X-RateLimit-Limit'),
+    );
+
+    unless ($res->is_success) {
+        warnf(
+            "something is fishy:\n%s\n--\n%s\n--\n",
+            $res->request->as_string,
+            $res->as_string,
+        );
     }
-    return @wq;
+
+    return $res;
 }
 
 # get_repo_list('users', 'miyagawa');
@@ -123,7 +128,7 @@ sub insert {
             forks         => $row->{forks},
             watchers      => $row->{watchers} || '',
             owner_login   => $row->{owner}->{login},
-            updated_at    => $self->parse_time($row->{updated_at})->epoch,
+            updated_at    => $self->parse_time($row->{pushed_at})->epoch,
             created_at    => $self->parse_time($row->{created_at})->epoch,
             host_type     => 'github',
             repo_class    => $repo_class,
