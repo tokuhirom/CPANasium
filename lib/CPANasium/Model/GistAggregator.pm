@@ -9,7 +9,7 @@ use Module::CPANfile::Safe;
 use Time::Piece qw(localtime gmtime);
 use JSON;
 use LWP::UserAgent;
-use Encode qw/encode decode/;
+use Encode;
 use Encode::Guess;
 
 my $URL = 'https://gist.github.com/search?q=mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
@@ -43,49 +43,12 @@ sub get_gist_info {
 
     my ($gist_id) = $repo =~ m! .+/(.*?)$ !x;
 
-    #バグ回避のためのダミー
-    #おそらく画像のせいでJSONエンコードがコケる
     my $res = $self->pithub->gists->get(
         gist_id => $gist_id
     );
     return $res;
 }
 
-# get_repo_list('users', 'miyagawa');
-
-# @args $repo: 'miyagawa/CGI-Compile'
-sub get_repo_info {
-    my ($self, $repo) = @_;
-
-    my $result = $self->pithub->request(
-        method => 'GET',
-        path   => sprintf( "/repos/%s", $repo ),
-        params => {
-            client_id     => $self->client_id,
-            client_secret => $self->client_secret,
-        },
-    );
-    return $result;
-}
-
-# get_repo_list('users', 'miyagawa');
-# get_repo_list('orgs', 'Plack');
-sub get_repo_list {
-    my ($self, $type, $github_id) = @_;
-
-    my $result = $self->pithub->request(
-        method => 'GET',
-        path   => sprintf( "/%s/%s/repos", $type, $github_id ),
-        params => {
-            client_id     => $self->client_id,
-            client_secret => $self->client_secret,
-            type          => 'public',
-            per_page      => 100,
-        },
-    );
-    $result->auto_pagination(1);
-    $result;
-}
 
 # @args $time '2013-05-23T04:40:16Z'
 sub parse_time {
@@ -148,50 +111,6 @@ sub insert {
         ## $row->{master_branch};
         ## $row->{html_url};
     }
-}
-
-sub analyze_cpanfile {
-    my ($self, $full_name, $cpanfile) = @_;
-
-    infof("Analyzing cpanfile for %s", $full_name);
-
-    my $tmpfile = File::Temp->new(UNLINK => 1);
-    print {$tmpfile} $cpanfile;
-
-    my $safe = Module::CPANfile::Safe->load($tmpfile->filename);
-    my $prereq_specs = $safe->prereq_specs;
-
-    # {
-    #     'runtime' => {
-    #         'requires' => {
-    #             'Mojolicious' => '3.80',
-    #             'Moo' => 1,
-    #             'WebService::Belkin::Wemo::Discover' => 0
-    #         }
-    #     }
-    # };
-    my $txn = $self->db->txn_scope;
-    $self->db->delete(
-        deps => {
-            repos_full_name => $full_name,
-        },
-    );
-    while (my ($phase, $x) = each %$prereq_specs) {
-        while (my ($relationship, $y) = each %$x) {
-            while (my ($module, $version) = each %$y) {
-                $self->db->replace(
-                    deps => {
-                        repos_full_name => $full_name,
-                        phase => $phase,
-                        relationship => $relationship,
-                        module => $module,
-                        version => $version,
-                    },
-                );
-            }
-        }
-    }
-    $txn->commit;
 }
 
 sub decode {
