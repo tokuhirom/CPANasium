@@ -30,7 +30,7 @@ get '/authors' => sub {
     my $page = $c->req->param('page') || 1;
     my ($authors, $pager) = $c->db->search_with_pager(
         'repos' => {},
-            {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 50,
+            {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 30,
             columns => [\'count(*) as count', 'owner_login', 'owner_avatar_url']});
     return $c->render('authors.tt', {
         authors => $authors,
