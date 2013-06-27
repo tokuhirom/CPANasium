@@ -6,11 +6,7 @@
 
     [% IF repo.host_type == 'gist' %]<script src="https://gist.github.com/[% repo.full_name %].js"></script>[% END %]
     [% IF repo.host_type == 'github' %]
-        <div id="repo"></div>
-        <script src="/static/js/repo.min.js"></script>
-        <script type="text/javascript">
-            $('#repo').repo({ user: '[% repo.owner_login %]', name: '[% repo.name %]', branch: '[% repo.master_branch %]'});
-        </script>
+        <div class="alert alert-success" style="text-align:center;"><a style="color:#FFF;display:block;" target="_blank" href="https://github.com/[% repo.full_name %]">View on Github</a></div>
     [% END %]
 </div>
 
