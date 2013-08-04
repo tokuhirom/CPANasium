@@ -1,4 +1,4 @@
-[% IF pager %]
+[% IF pager && !(pager.current_page == 1 && !pager.next_page) %]
     <div class="pagination" style="text-align:center;">
         <ul>
             [% IF pager.previous_page %]
