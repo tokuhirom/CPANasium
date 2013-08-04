@@ -34,6 +34,12 @@
                         <li [% IF c().req.path_info=='/authors' %]class="active"[% END %]><a href="/authors">Authors</a></li>
                         <li [% IF c().req.path_info=='/random' %]class="active"[% END %]><a href="/random">Random</a></li>
                         <li [% IF c().req.path_info=='/about' %]class="active"[% END %]><a href="/about">About</a></li>
+                        <li>
+                          <form action="/search" method="get" class="form-inline form-horizontal" style="vertical-align:top;margin:0;padding:0;">
+                            <input type="text" class="span3" name="keyword" placeholder="keyword">
+                            <button type="submit" class="btn btn-info"><i class="icon-search"></i></button>
+                          </form>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,20 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<form method="get" class="well text-center">
+  <fieldset>
+    <input type="text" class="span4" name="keyword" value="[% keyword %]" placeholder="keyword">
+    <input type="submit" class="btn btn-info" value="search">
+  </fieldset>
+</form>
+
+<div>
+    [% INCLUDE 'include/pager.tt' %]
+    <table class="table">
+        [% FOR v IN recent_repos %]
+        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td><td>[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></tr>
+        [% END %]
+    </table>
+    [% INCLUDE 'include/pager.tt' %]
+</div>
+
+[% END %]

@@ -79,6 +79,24 @@ get '/user/:user/:module' => sub {
     });
 };
 
+get '/search' => sub {
+    my ($c) = @_;
+
+    my $filter = $c->req->param('filter') || 'all';
+    my $keyword = $c->req->param('keyword') || '';
+
+    my ($recent_repos, $pager) = $c->model('Repo')->search(
+        filter => $filter,
+        keyword => $keyword,
+        page => $c->req->param('page') || 1,
+    );
+
+    return $c->render('search.tt', {
+        recent_repos => $recent_repos,
+        pager => $pager,
+        keyword => $keyword,
+    });
+};
 
 any '/random' => sub {
     my ($c) = @_;
