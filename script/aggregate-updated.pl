@@ -9,3 +9,10 @@ use Mikuregator;
 
 my $c = Mikuregator->new;
 $c->batch('AggregatorUpdated')->run;
+
+__END__
+
+=head1 SYNOPSIS
+
+    % aggregate-updated.pl
+
