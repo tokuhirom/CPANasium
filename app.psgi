@@ -6,13 +6,13 @@ use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
 use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use Plack::Builder;
 
-use CPANasium::Web;
-use CPANasium;
+use Mikuregator::Web;
+use Mikuregator;
 use Plack::Session::Store::DBI;
 use Plack::Session::State::Cookie;
 use DBI;
 
-my $db_config = CPANasium->config->{DBI} || die "Missing configuration for DBI";
+my $db_config = Mikuregator->config->{DBI} || die "Missing configuration for DBI";
 builder {
     enable 'Plack::Middleware::Static',
         path => qr{^(?:/static/)},
@@ -21,5 +21,5 @@ builder {
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), 'static');
     enable 'Plack::Middleware::ReverseProxy';
-    CPANasium::Web->to_app();
+    Mikuregator::Web->to_app();
 };

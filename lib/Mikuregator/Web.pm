@@ -1,14 +1,14 @@
-package CPANasium::Web;
+package Mikuregator::Web;
 use strict;
 use warnings;
 use utf8;
-use parent qw/CPANasium Amon2::Web/;
+use parent qw/Mikuregator Amon2::Web/;
 use File::Spec;
 
 # dispatcher
-use CPANasium::Web::Dispatcher;
+use Mikuregator::Web::Dispatcher;
 sub dispatch {
-    return (CPANasium::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
+    return (Mikuregator::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
 }
 
 # load plugins
@@ -20,9 +20,9 @@ __PACKAGE__->load_plugins(
 );
 
 # setup view
-use CPANasium::Web::View;
+use Mikuregator::Web::View;
 {
-    my $view = CPANasium::Web::View->make_instance(__PACKAGE__);
+    my $view = Mikuregator::Web::View->make_instance(__PACKAGE__);
     sub create_view { $view }
 }
 

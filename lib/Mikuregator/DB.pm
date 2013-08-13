@@ -1,4 +1,4 @@
-package CPANasium::DB;
+package Mikuregator::DB;
 use strict;
 use warnings;
 use utf8;

@@ -1,4 +1,4 @@
-package CPANasium::Model::Repo;
+package Mikuregator::Model::Repo;
 
 use strict;
 use warnings;

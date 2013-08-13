@@ -5,7 +5,7 @@ use utf8;
 use 5.010000;
 use autodie;
 
-use CPANasium;
+use Mikuregator;
 
-my $c = CPANasium->new;
+my $c = Mikuregator->new;
 $c->batch('AggregatorUpdated')->run;

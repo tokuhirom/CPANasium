@@ -38,11 +38,11 @@ sub slurp {
 }
 
 # initialize database
-use CPANasium;
+use Mikuregator;
 {
     unlink 'db/test.db' if -f 'db/test.db';
 
-    my $c = CPANasium->new();
+    my $c = Mikuregator->new();
     $c->setup_schema();
 }
 

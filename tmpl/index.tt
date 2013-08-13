@@ -1,6 +1,6 @@
 [% WRAPPER 'include/layout.tt' %]
 
-<h1 style="padding: 20px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Mikutterasium</h1>
+<h1 style="padding: 20px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Mikuregator</h1>
 <div class="row">
     <p style="text-align: center;">(gist.)githubからみくったー関連のレポジトリをかき集めるよ！</p>
 </div>

@@ -8,7 +8,7 @@
 </style>
 
 <h1>Random repositories</h1>
-<p>Mikutterasiumに登録されてるレポジトリのうち、ランダムに10件表示しています。<a class="btn btn-success" href="/random">更新</a></p>
+<p>Mikuregatorに登録されてるレポジトリのうち、ランダムに10件表示しています。<a class="btn btn-success" href="/random">更新</a></p>
 <div>
     [% INCLUDE 'include/pager.tt' %]
     <table class="table">

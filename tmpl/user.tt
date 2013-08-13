@@ -1,4 +1,4 @@
-[% WRAPPER 'include/layout.tt' WITH title=user _ ' - Mikutterasium' %]
+[% WRAPPER 'include/layout.tt' WITH title=user _ ' - Mikuregator' %]
 
 <h1><img style="width:48px;height:48px;" src="[% repos.0.owner_avatar_url %]" alt="[% user %]">[% user %]'s statistics. <a href="http://github.com/[% user %]/"><i class="icon-github"></i></a> <a href="https://gist.github.com/[% user %]"><i class="icon-gist">Gist</i></a></h1>
 

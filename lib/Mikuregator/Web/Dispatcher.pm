@@ -1,4 +1,4 @@
-package CPANasium::Web::Dispatcher;
+package Mikuregator::Web::Dispatcher;
 use strict;
 use warnings;
 use utf8;

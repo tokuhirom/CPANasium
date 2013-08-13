@@ -6,9 +6,9 @@ use 5.010000;
 use autodie;
 use Pod::Usage;
 
-use CPANasium;
+use Mikuregator;
 
-my $c = CPANasium->new;
+my $c = Mikuregator->new;
 $c->batch('AggregateByGist')->run(@ARGV);
 
 __END__
@@ -16,5 +16,5 @@ __END__
 =head1 SYNOPSIS
 
     ### args: $start_page $limit_page
-    % cpanasium-aggregate-by-gist.pl 1 10
+    % aggregate-by-gist.pl 1 10
 

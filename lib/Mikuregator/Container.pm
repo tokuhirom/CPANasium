@@ -1,4 +1,4 @@
-package CPANasium::Container;
+package Mikuregator::Container;
 use strict;
 use warnings;
 use utf8;

@@ -46,8 +46,8 @@ my $build = Module::Build->subclass(
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
-    name        => 'CPANasium',
-    module_name => 'CPANasium',
+    name        => 'Mikuregator',
+    module_name => 'Mikuregator',
     author        => 'Some Person <person@example.com>',
     dist_abstract => 'A web site based on Amon2',
 

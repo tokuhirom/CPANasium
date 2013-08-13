@@ -1,4 +1,4 @@
-package CPANasium;
+package Mikuregator;
 use strict;
 use warnings;
 use utf8;
@@ -40,7 +40,7 @@ has db => (
         my $self = shift;
         Teng::Schema::Loader->load(
             dbh       => $self->dbh,
-            namespace => 'CPANasium::DB'
+            namespace => 'Mikuregator::DB'
         );
     },
 );
@@ -92,7 +92,7 @@ sub load_component {
     my ($self, $base, $name) = @_;
 
     $self->{"$base#$name"} //= do {
-        my $klass = $name =~ s/^\+// ? $name : "CPANasium::${base}::$name";
+        my $klass = $name =~ s/^\+// ? $name : "Mikuregator::${base}::$name";
         Module::Load::load($klass);
         my %params;
         for my $attr ($klass->meta->get_attribute_list) {

@@ -1,4 +1,4 @@
-package CPANasium::Batch::AggregatorUpdated;
+package Mikuregator::Batch::AggregatorUpdated;
 use strict;
 use warnings;
 use utf8;

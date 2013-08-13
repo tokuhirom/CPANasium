@@ -1,4 +1,4 @@
-package CPANasium::Model::Aggregator;
+package Mikuregator::Model::GistAggregator;
 use strict;
 use warnings;
 use utf8;
@@ -12,7 +12,8 @@ use LWP::UserAgent;
 use Encode;
 use Encode::Guess;
 
-my $URL = 'https://api.github.com/legacy/repos/search/mikutter%20OR%20%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
+my $URL = 'https://gist.github.com/search?q=mikutter+OR+%22%E3%81%BF%E3%81%8F%E3%81%A3%E3%81%9F%22'; # mikutter OR "みくった"
+#my $URL = 'https://gist.github.com/search?l=ruby&q=%22Plugin.create%22'; # "Plugin.create"
 
 use Mouse;
 
@@ -27,43 +28,26 @@ has pithub => (is => 'ro', required => 1);
 no Mouse;
 
 # @return ('miyagawa/CGI-Compile', 'tokuhirom/Amon', ...)
-sub get_updated_repo_list {
+sub get_gist_list {
     my ($self, $page) = @_;
-
-    my $ua = LWP::UserAgent->new;
-    my $res = $ua->get($URL . '?sort=updated&start_page=' . $page);
-
-    infof("API: %d/%d",
-        $res->header('X-RateLimit-Remaining'),
-        $res->header('X-RateLimit-Limit'),
-    );
-
-    unless ($res->is_success) {
-        warnf(
-            "something is fishy:\n%s\n--\n%s\n--\n",
-            $res->request->as_string,
-            $res->as_string,
-        );
-    }
-
-    return $res;
+    my $wq = wq($URL . ($page ? "&page=$page" : ''))->find('.gist-item a .css-truncate-target')->map(sub {
+        my ($i, $elem) = @_;
+        my $href = $elem->parent->attr('href');#text;
+        $href;
+    });
+    return @$wq;
 }
 
-# get_repo_list('users', 'miyagawa');
-
 # @args $repo: 'miyagawa/CGI-Compile'
-sub get_repo_info {
+sub get_gist_info {
     my ($self, $repo) = @_;
 
-    my $result = $self->pithub->request(
-        method => 'GET',
-        path   => sprintf( "/repos/%s", $repo ),
-        params => {
-            client_id     => $self->client_id,
-            client_secret => $self->client_secret,
-        },
+    my ($gist_id) = $repo =~ m! .+/(.*?)$ !x;
+
+    my $res = $self->pithub->gists->get(
+        gist_id => $gist_id
     );
-    return $result;
+    return $res;
 }
 
 
@@ -97,23 +81,24 @@ sub insert {
         my $data = $self->json->encode($row);
         my $repo_class = "";
         for my$_data ($data, $row->{html_url}, $row->{full_name}, $row->{description}) {
-            $repo_class = "plugin" if $_data =~ m/(plugin)|(プラグイン)|(ﾌﾟﾗｸﾞｲﾝ)/i;
+            next unless $_data;
+            $repo_class = "plugin" if ($_data =~ m/(plugin)|(プラグイン)|(ﾌﾟﾗｸﾞｲﾝ)/i);
         }
 
         my $params = +{
-            master_branch => $row->{master_branch},
-            html_url      => $row->{html_url},
-            name          => $row->{name},
-            full_name     => $row->{full_name},
-            owner_avatar_url => $row->{owner}->{avatar_url},
-            'description' => $self->decode($row->{description}),
-            forks         => $row->{forks},
-            watchers      => $row->{watchers} || '',
-            owner_login   => $row->{owner}->{login},
-            updated_at    => $self->parse_time($row->{pushed_at})->epoch,
-            created_at    => $self->parse_time($row->{created_at})->epoch,
-            host_type     => 'github',
+            master_branch => 'master',
+            host_type     => 'gist',
             repo_class    => $repo_class,
+            html_url      => $row->{html_url},
+            name          => $row->{id},
+            full_name     => $row->{user}->{login} . '/' . $row->{id},
+            owner_avatar_url => $row->{user}->{avatar_url},
+            'description' => $self->decode($row->{description}),
+            forks         => '', #$row->{forks},
+            watchers      => $row->{watchers} || '',
+            owner_login   => $row->{user}->{login},
+            updated_at    => $self->parse_time($row->{updated_at})->epoch,
+            created_at    => $self->parse_time($row->{created_at})->epoch,
         };
         my $r = $self->db->replace(
             repos => {
@@ -126,10 +111,8 @@ sub insert {
         ## $row->{watchers};
         ## $row->{master_branch};
         ## $row->{html_url};
-        # use Data::Dumper; warn Dumper($row);
     }
 }
-
 
 sub decode {
     my ($self, $data) = @_;
@@ -140,6 +123,7 @@ sub decode {
 
     return $data;
 }
+
 
 1;
 

@@ -1,4 +1,4 @@
-package CPANasium::Web::View;
+package Mikuregator::Web::View;
 use strict;
 use warnings;
 use utf8;
@@ -6,12 +6,12 @@ use Carp ();
 use File::Spec ();
 
 use Text::Xslate 1.6001;
-use CPANasium::Web::ViewFunctions;
+use Mikuregator::Web::ViewFunctions;
 
 # setup view class
 sub make_instance {
     my ($class, $context) = @_;
-    Carp::croak("Usage: CPANasium::View->make_instance(\$context_class)") if @_!=2;
+    Carp::croak("Usage: Mikuregator::View->make_instance(\$context_class)") if @_!=2;
 
     my $view_conf = $context->config->{'Text::Xslate'} || +{};
     unless (exists $view_conf->{path}) {
@@ -21,7 +21,7 @@ sub make_instance {
         'syntax'   => 'TTerse',
         'module'   => [
             'Text::Xslate::Bridge::Star',
-            'CPANasium::Web::ViewFunctions',
+            'Mikuregator::Web::ViewFunctions',
         ],
         'function' => {
         },

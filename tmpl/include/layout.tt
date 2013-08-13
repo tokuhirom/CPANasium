@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>[% title || 'Mikutterasium' %]</title>
+    <title>[% title || 'Mikuregator' %]</title>
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="format-detection" content="telephone=no" />
@@ -26,7 +26,7 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="/">Mikutterasium</a>
+                <a class="brand" href="/">Mikuregator</a>
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li [% IF c().req.path_info=='/' %]class="active"[% END %]><a href="/">Home</a></li>

@@ -1,4 +1,4 @@
-package CPANasium::Batch::AggregateByGist;
+package Mikuregator::Batch::AggregateByGist;
 use strict;
 use warnings;
 use utf8;

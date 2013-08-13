@@ -1,4 +1,4 @@
-package CPANasium::Web::ViewFunctions;
+package Mikuregator::Web::ViewFunctions;
 use strict;
 use warnings;
 use utf8;

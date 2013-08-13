@@ -15,7 +15,7 @@ MYMETA.yml
 /_build/
 /local/
 /.carton/
-/CPANasium-*
+/Mikuregator-*
 /.build
 /_build_params
 !Build/

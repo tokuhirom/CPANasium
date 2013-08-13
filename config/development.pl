@@ -3,7 +3,7 @@ use File::Basename qw(dirname);
 use File::Path;
 my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
 my $dbpath = File::Spec->catfile($basedir, 'db', 'development.db');
-mkpath("/tmp/CPANasium-$<");
+mkpath("/tmp/Mikuregator-$<");
 
 +{
     'DBI' => [
@@ -14,7 +14,7 @@ mkpath("/tmp/CPANasium-$<");
         }
     ],
     'LWP::UserAgent::WithCache' => {
-        cache_root => "/tmp/CPANasium-$</"
+        cache_root => "/tmp/Mikuregator-$</"
     },
     'Pithub' => {
     },

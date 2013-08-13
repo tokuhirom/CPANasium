@@ -4,10 +4,10 @@ use utf8;
 use Test::More;
 
 use_ok $_ for qw(
-    CPANasium
-    CPANasium::Web
-    CPANasium::Web::ViewFunctions
-    CPANasium::Web::Dispatcher
+    Mikuregator
+    Mikuregator::Web
+    Mikuregator::Web::ViewFunctions
+    Mikuregator::Web::Dispatcher
 );
 
 done_testing;
