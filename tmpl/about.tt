@@ -6,16 +6,18 @@
     }
 </style>
 
-<h1>About</h1>
+<div class="row">
+    <h1>About</h1>
+
+</div>
+
 <div class="row">
     <h2>Mikuregatorって？</h2>
     <p>
     (gist.)githubをクロールして、みくったー関連っぽいレポジトリをかき集めるサイトです。<br>
     キーワード検索で収集しているため、プラグイン以外のものが含まれていたり、mikutterプラグインでも収集されないものもあり、収集精度は完全ではありません
     </p>
-</div>
 
-<div class="row">
     <h2>聞きたい事があるんだけど</h2>
     <p>
     Twitterで作者(<a href="https://twitter.com/ichigotake">@ichigotake</a>)に声をかけてもらえると喜びます<br>
