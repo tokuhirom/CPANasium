@@ -33,7 +33,6 @@ requires 'Plack::Session::Store::DBI';
 requires 'Pod::Usage';
 requires 'Teng',                            '0.18';
 requires 'Teng::Schema::Loader';
-requires 'https://github.com/yibe/Teng-Plugin-SearchBySQLWithPager/archive/master.tar.gz';
 requires 'Test::WWW::Mechanize::PSGI'      => '0';
 requires 'Text::Xslate'                    => '1.6001';
 requires 'Time::Piece'                     => '1.20';
