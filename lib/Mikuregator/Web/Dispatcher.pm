@@ -9,7 +9,17 @@ any '/' => sub {
 
     my @count_repos = $c->db->search_by_sql(q{select host_type, count(host_type) as `count` from repos group by host_type});
     my @count_authors = $c->db->search_by_sql(q{select distinct(owner_login) from repos});
-    my @authors = $c->db->search_by_sql(q{SELECT host_type, owner_login, owner_avatar_url, count(*) as `count` FROM repos GROUP BY owner_login ORDER BY count(*) DESC LIMIT 10});
+    my @authors = $c->db->search_by_sql(q{
+        select
+	    owner_login,
+	    host_type,
+	    owner_avatar_url,
+	    count(*) as count
+	        from (select * from repos order by updated_at desc limit 0,50) as repos
+		    group by owner_login
+		    order by count desc
+		    limit 0,10; 
+    });
     my @recent_repos = $c->db->search_by_sql(q{select host_type, owner_login, owner_avatar_url, full_name, html_url, description, created_at, updated_at from repos order by updated_at desc limit 10;});
 
     return $c->render('index.tt', {

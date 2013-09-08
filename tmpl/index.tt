@@ -1,8 +1,7 @@
 [% WRAPPER 'include/layout.tt' %]
 
-<h1 style="padding: 20px; text-align: center; font-size: 80px; line-height: 1; letter-spacing: -2px;">Mikuregator</h1>
-<div class="row">
-    <p style="text-align: center;">(gist.)githubからみくったー関連のレポジトリをかき集めるよ！</p>
+<div class="row" style="margin:40px;">
+    <p style="text-align: center;">(gist.)githubからみくったーっぽいレポジトリをかき集めるよ！</p>
 </div>
 
 <hr />
@@ -11,19 +10,9 @@
     .marketing .row {
         margin-top: 20px;
     }
-    .description {
-        font-size: small;
-        color: #444;
-    }
-    .datetime {
-        color: #888;
-        float: right;
-    }
-    .more {
-        display: block;
-        font-size: 16px;
-        line-height: 2.0em;
-        text-align: right;
+    .activity-description {
+      mardin: 0;
+      padding: 0;
     }
     a.more:hover {
         background-color: #DDD;
@@ -31,25 +20,30 @@
 </style>
 
 <div class="row">
-
+    
     <div class="span8">
-        <h1>Recent repositories</h1>
         <table class="table">
+	    <caption>
+	      最近更新のあったレポジトリ
+	    </caption>
             <thead>
                 <tr><th colspan="2">Repository</th></tr>
             </thead>
             <tbody>
             [% FOR v IN recent_repos %]
-                <tr><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><span class="datetime">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span><div class="description">[% v.description %]</div></td></tr>
+	      <tr>
+                [% INCLUDE 'include/repo.tt' WITH repo = v %]
+              </tr>
             [% END %]
             </tbody>
         </table>
-        <a href="/recent" class="more"><i class="icon-plus-sign"></i>More...</a>
     </div>
 
     <div class="span4">
-        <h1>Authors</h1>
         <table class="table">
+	    <caption>
+	      <a href="/recent">recent</a>の直近50件のAuthor内訳
+	    </caption>
             <thead>
             <tr>
                 <th colspan="2">Author</th>
@@ -62,7 +56,6 @@
             [% END %]
             <tbody>
         </table>
-        <a href="/authors" class="more"><i class="icon-plus-sign"></i>More...</a>
     </div>
 </div>
 

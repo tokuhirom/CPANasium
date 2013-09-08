@@ -1,18 +1,16 @@
-<tr>
-  [% IF !icon_disabled %]
+[% IF !icon_disabled %]
   <td class="icon">[% INCLUDE 'include/icon.tt' WITH v = repo %]</td>
-  [% END %]
-  <td>
-    <div class="repo-item-header">
-      <a href="/user/[% repo.full_name %]">
-        [% IF name && name == 'name' %]
-	  [% repo.name %]
-	[% ELSE %]
-          [% repo.full_name %]
-	[% END %]
-      </a>
-      <span class="datetime">[% localtime(repo.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span>
-    </div>
-    <div class="description">[% repo.description %]</div>
-  </td>
-</tr>
+[% END %]
+<td>
+  <div class="repo-item-header">
+    <a href="/user/[% repo.full_name %]">
+    [% IF name && name == 'name' %]
+      [% repo.name %]
+    [% ELSE %]
+      [% repo.full_name %]
+    [% END %]
+    </a>
+    <span class="datetime">[% localtime(repo.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</span>
+  </div>
+  <div class="description">[% repo.description %]</div>
+</td>

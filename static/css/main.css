@@ -18,10 +18,34 @@ footer {
 @media screen and (max-device-width: 480px) {
 }
 
+ul {
+  margin: 0;
+  list-style-type:none;
+}
+caption {
+  text-align: left;
+  margin-left: 5px;
+}
+
+.col-index {
+  vertical-align: middle;
+  display: block;
+  height: 100%;
+}
+
 .icon {
     width: 48px;
 }
 .icom img {
     width: 48px;
     height: 48px;
+}
+
+.description {
+  font-size: small;
+  color: #444;
+}
+.datetime {
+  color: #888;
+  float: right;
 }
