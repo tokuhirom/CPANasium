@@ -13,7 +13,11 @@
         </thead>
         <tbody>
         [% FOR v IN authors %]
-        <tr><td class="span1">[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td></tr>
+        <tr>
+	  <td class="span1" style="vertical-align:middle;">[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td>
+	  <td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td>
+	  <td><a href="/user/[% v.owner_login %]">[% v.owner_login %]</a></td><td>[% v.count %]</td>
+	</tr>
         [% END %]
         </tbody>
     </table>

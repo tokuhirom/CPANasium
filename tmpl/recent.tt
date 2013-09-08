@@ -12,7 +12,12 @@
     [% INCLUDE 'include/pager.tt' %]
     <table class="table">
         [% FOR v IN recent_repos %]
-        <tr><td>[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</td><td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td><td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td><td style="white-space:nowrap;">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td></tr>
+        <tr>
+          <td style="vertical-align:middle;"><span class="col-index">[% loop.count+((pager.current_page-1)*pager.entries_per_page) %]</span></td>
+          <td class="icon">[% INCLUDE 'include/icon.tt' WITH v = v %]</td>
+	  <td><a href="/user/[% v.full_name %]">[% v.full_name %]</a><br><span class="description">[% v.description %]</span></td>
+	  <td style="white-space:nowrap;">[% localtime(v.updated_at).strftime('%Y-%m-%d %H:%M:%S') %]</td>
+	</tr>
         [% END %]
     </table>
     [% INCLUDE 'include/pager.tt' %]
