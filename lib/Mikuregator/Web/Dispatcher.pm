@@ -73,7 +73,7 @@ get '/user/:user/:module' => sub {
     my ($repo) = $c->db->search_by_sql(
         q{SELECT * FROM repos WHERE full_name=?},
         [$user . '/' . $module],
-    ) or die;
+    ) or die "not found: $user/$module";
     return $c->render('repo.tt', {
         repo => $repo,
     });
