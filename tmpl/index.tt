@@ -42,7 +42,7 @@
     <div class="span4">
         <table class="table">
 	    <caption>
-	      <a href="/recent">recent</a>の直近50件のAuthor内訳
+	      <a href="/recent">Recent</a>の直近50件のAuthor内訳
 	    </caption>
             <thead>
             <tr>
