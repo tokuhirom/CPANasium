@@ -26,12 +26,15 @@ no Mouse;
 sub get_updated_repo_list {
     my ($self, $page) = @_;
 
-    my $wq = wq($URL . ($page ? "?page=$page" : ''))->find('.repolist h3 a')->map(sub {
+    my $wq = wq($URL . ($page ? "?page=$page" : ''))->find('.repo-leaderboard-title a')->map(sub {
         my ($i, $elem) = @_;
         my $href = $elem->attr('href');
         $href =~ s!^/!!;
         $href;
     });
+    unless (@$wq > 0) {
+        warnf("%s has been changed", $URL);
+    }
     return @$wq;
 }
 
