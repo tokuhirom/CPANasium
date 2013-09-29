@@ -16,7 +16,7 @@ requires 'JSON::XS';
 requires 'Log::Minimal';
 requires 'LWP::UserAgent::Cached';
 requires 'LWP::UserAgent::WithCache';
-requires 'Module::CPANfile';
+requires 'Module::CPANfile'                => '0.9033';
 requires 'Module::Functions'               => '2';
 requires 'Module::Load';
 requires 'Moo';
