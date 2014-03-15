@@ -92,7 +92,6 @@ sub insert {
             html_url      => $row->{html_url},
             name          => $row->{id},
             full_name     => $row->{full_name},
-#}$row->{user}->{login} . '/' . $row->{id},
             owner_avatar_url => $row->{user}->{avatar_url},
             'description' => $self->decode($row->{description}),
             forks         => '', #$row->{forks},
