@@ -92,7 +92,7 @@ sub insert {
 
     while ( my $row = $result->next ) {
         next if $row->{private};
-        next if $row->{fork};
+        next if ($row->{parent}->{id} == 6519151); # みっくすとあは例外的に収集
 
         my $data = $self->json->encode($row);
         my $repo_class = "";
