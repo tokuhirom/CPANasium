@@ -22,3 +22,4 @@ MYMETA.yml
 !META.json
 !LICENSE
 /config/production.pl
+.DS_Store
