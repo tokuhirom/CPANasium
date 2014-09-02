@@ -2,7 +2,7 @@ package Mikuregator::Web::Dispatcher;
 use strict;
 use warnings;
 use utf8;
-use Amon2::Web::Dispatcher::Lite;
+use Amon2::Web::Dispatcher::RouterBoom;
 
 any '/' => sub {
     my ($c) = @_;
@@ -39,7 +39,8 @@ get '/authors' => sub {
     my ($c) = @_;
     my $page = $c->req->param('page') || 1;
     my ($authors, $pager) = $c->db->search_with_pager(
-        'repos' => {},
+        'repos',
+        {},
             {group_by => 'owner_login', order_by => 'count(*) desc', page => $page, rows => 30,
             columns => [\'count(*) as count', 'owner_login', 'owner_avatar_url']});
     return $c->render('authors.tt', {

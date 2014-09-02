@@ -14,16 +14,19 @@ sub dispatch {
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
-    'Web::CSRFDefender' => {
-        post_only => 1,
-    },
+    'Web::JSON',
+    '+Mikuregator::Web::Plugin::Session',
 );
 
 # setup view
 use Mikuregator::Web::View;
 {
-    my $view = Mikuregator::Web::View->make_instance(__PACKAGE__);
-    sub create_view { $view }
+    sub create_view {
+        my $view = Mikuregator::Web::View->make_instance(__PACKAGE__);
+        no warnings 'redefine';
+        *Mikuregator::Web::create_view = sub { $view }; # Class cache.
+        $view
+    }
 }
 
 # for your security
@@ -39,14 +42,6 @@ __PACKAGE__->add_trigger(
 
         # Cache control.
         $res->header( 'Cache-Control' => 'private' );
-    },
-);
-
-__PACKAGE__->add_trigger(
-    BEFORE_DISPATCH => sub {
-        my ( $c ) = @_;
-        # ...
-        return;
     },
 );
 

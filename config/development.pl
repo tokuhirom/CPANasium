@@ -1,15 +1,16 @@
 use File::Spec;
 use File::Basename qw(dirname);
-use File::Path;
 my $basedir = File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), '..'));
-my $dbpath = File::Spec->catfile($basedir, 'db', 'development.db');
-mkpath("/tmp/Mikuregator-$<");
-
+#my $dbpath = File::Spec->catfile($basedir, 'db', 'development.db');
 +{
     'DBI' => [
-        "dbi:SQLite:dbname=$dbpath", '', '',
+        #"dbi:SQLite:dbname=$dbpath", '', '',
+        #+{
+        #    sqlite_unicode => 1,
+        #}
+        "dbi:mysql:dbname=mikuregator", 'root', '',
         +{
-            sqlite_unicode => 1,
+            mysql_enable_utf8 => 1,
             RaiseError => 1,
         }
     ],
@@ -22,4 +23,9 @@ mkpath("/tmp/Mikuregator-$<");
         client_id => 'CLIENT_ID',
         client_secret => 'CLIENT_SECRET',
     },
+    'Text::Xslate' => {
+        # TODO: Kolon にする
+        syntax => 'TTerse',
+    },
 };
+

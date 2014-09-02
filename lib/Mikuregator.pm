@@ -2,81 +2,62 @@ package Mikuregator;
 use strict;
 use warnings;
 use utf8;
-use parent qw/Amon2/;
-our $VERSION='0.02';
+our $VERSION='0.01';
 use 5.008001;
-
-
-use DBI;
-use Teng::Schema::Loader;
-use LWP::UserAgent::WithCache;
+use Mikuregator::DB::Schema;
+use Mikuregator::DB;
 use Pithub;
-use JSON::XS;
+use JSON;
+use LWP::UserAgent::WithCache;
 
-use Mouse;
+use parent qw/Amon2/;
+# Enable project local mode.
+__PACKAGE__->make_local_context();
 
-has dbh => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        my $conf = $self->config->{DBI} // die "Missing configuration for DBH";
-        DBI->connect(@$conf);
-    },
-);
+my $schema = Mikuregator::DB::Schema->instance;
 
-has json => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        JSON::XS->new->ascii(1)->utf8(1);
-    },
-);
-
-has db => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-        Teng::Schema::Loader->load(
-            dbh       => $self->dbh,
-            namespace => 'Mikuregator::DB'
-        );
-    },
-);
-
-has ua => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $c = shift;
-        my $conf = $c->config->{'LWP::UserAgent::WithCache'} // die;
-        LWP::UserAgent::WithCache->new(
-            timeout => 6,
-            namespace => 'lwp-cache',
-            default_expires_in => 600,
-            %$conf
+sub db {
+    my $c = shift;
+    if (!exists $c->{db}) {
+        my $conf = $c->config->{DBI}
+            or die "Missing configuration about DBI";
+        $c->{db} = Mikuregator::DB->new(
+            schema       => $schema,
+            connect_info => [@$conf],
+            # I suggest to enable following lines if you are using mysql.
+            # on_connect_do => [
+            #     'SET SESSION sql_mode=STRICT_TRANS_TABLES;',
+            # ],
         );
     }
-);
+    $c->{db};
+}
 
-has pithub => (
-    is => 'ro',
-    lazy => 1,
-    default => sub {
-        my $c = shift;
-        my $conf = $c->config->{'Pithub'} // die;
-        Pithub->new(
-            %$conf,
-            ua => $c->ua,
-            auto_pagination => 1,
-        );
-    },
-);
+sub json {
+    my $c = shift;
+    $c->{json} //= JSON->new->ascii(1)->utf8(1);
+}
 
-no Mouse;
+sub ua {
+    my $c = shift;
+    my $conf = $c->config->{'LWP::UserAgent::WithCache'} // die;
+    $c->{ua} //= LWP::UserAgent::WithCache->new(
+        timeout => 6,
+        namespace => 'lwp_cache',
+        default_expires_in => 600,
+        %$conf,
+    );
+}
 
-use Module::Load;
+sub pithub {
+    my $c = shift;
+    my $conf = $c->config->{'Pithub'};
+    $c->{pithub} //= Pithub->new(
+        ua => $c->ua,
+        auto_pagination => 1,
+        %$conf,
+    );
+}
 
 sub batch {
     my ($self, $name) = @_;
@@ -110,3 +91,17 @@ sub client_id { shift->config->{Github}->{client_id} }
 sub client_secret { shift->config->{Github}->{client_secret} }
 
 1;
+__END__
+
+=head1 NAME
+
+Mikuregator - Mikuregator
+
+=head1 DESCRIPTION
+
+This is a main context class for Mikuregator
+
+=head1 AUTHOR
+
+Mikuregator authors.
+

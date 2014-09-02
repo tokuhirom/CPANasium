@@ -15,16 +15,15 @@ sub commify {
     return $_;
 }
 
-sub c { Amon2->context() }
-sub uri_with { Amon2->context()->req->uri_with(@_) }
-sub uri_for { Amon2->context()->uri_for(@_) }
-sub ucfirst { CORE::ucfirst(shift) }
+sub c { Mikuregator->context() }
+sub uri_with { Mikuregator->context()->req->uri_with(@_) }
+sub uri_for { Mikuregator->context()->uri_for(@_) }
 
 {
     my %static_file_cache;
     sub static_file {
         my $fname = shift;
-        my $c = Amon2->context;
+        my $c = Mikuregator->context;
         if (not exists $static_file_cache{$fname}) {
             my $fullpath = File::Spec->catfile($c->base_dir(), $fname);
             $static_file_cache{$fname} = (stat $fullpath)[9];
